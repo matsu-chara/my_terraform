@@ -8,6 +8,13 @@ $ terraform plan
 $ terraform apply
 ```
 
+## check
+
+```
+$ aws ec2 describe-instances
+```
+
 ## License
 
 MIT
+
