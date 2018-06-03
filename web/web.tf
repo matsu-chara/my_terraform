@@ -28,3 +28,18 @@ resource "aws_instance" "web" {
   count = 2
 }
 
+resource "aws_elb" "web" {
+  name = "web-elb"
+  subnets = ["${module.vpc.public_subnet_id}"]
+  security_groups = ["${aws_security_group.web_inbound_sg.id}"]
+  "listener" {
+    instance_port = 80
+    instance_protocol = ""
+    lb_port = 0
+    lb_protocol = ""
+  }
+  instances = ["${aws_instance.web.*.id}"]
+}
+
+resource "aws_security_group" "web_inbound_sg" {[
+]}
