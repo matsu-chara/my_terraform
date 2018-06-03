@@ -30,11 +30,11 @@ resource "aws_instance" "web" {
     "${aws_security_group.web_host_sg.id}",
   ]
 
-  count      = instance_ip_count
+  count      = "${local.instance_ip_count}"
   private_ip = "${var.instance_ips[count.index]}"
 
   tags {
-    Name = "web-${format("%03d", count.index+1)}"
+    Name  = "web-${format("%03d", count.index+1)}"
     Owner = "${var.owner_tag[count.index]}"
   }
 }

@@ -32,7 +32,7 @@ variable "instance_ips" {
 }
 
 variable "owner_tag" {
-  type = "list"
+  type    = "list"
   default = ["team1", "team2"]
 }
 
