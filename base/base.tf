@@ -1,13 +1,14 @@
 provider "aws" {
-  region  = "ap-northeast-1"
+  region  = "${var.region}"
   version = "~> 1.21"
 }
 
 resource "aws_instance" "base" {
-  ami           = "ami-2724cf58"
+  ami           = "${lookup(var.ami, var.region)}"
   instance_type = "t2.micro"
 }
 
 resource "aws_eip" "base" {
   instance = "${aws_instance.base.id}"
+  vpc = true
 }
