@@ -3,11 +3,15 @@ provider "aws" {
 }
 
 module "vpc" {
-  source         = "git::https://github.com/turnbullpress/tf_vpc?ref=v0.0.2"
-  key_name       = "web"
-  environment    = "web"
-  vpc_cidr       = "10.0.0.0/16"
-  public_subnets = ["10.0.1.0/24"]
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "1.32.0"
+  name    = "web"
+  cidr    = "10.0.0.0/16"
+  azs     = ["${var.region}"]
+
+  public_subnets = [
+    "10.0.1.0/24",
+  ]
 }
 
 resource "aws_key_pair" "auth" {
@@ -19,7 +23,7 @@ resource "aws_instance" "web" {
   ami                         = "${lookup(var.ami, var.region)}}"
   instance_type               = "${var.instance_type}"
   key_name                    = "${var.key_name}}"
-  subnet_id                   = "${module.vpc.public_subnet_ids}"
+  subnet_id                   = "${module.vpc.public_subnets}"
   associate_public_ip_address = true
   user_data                   = "${file("files/web_bootstrap.sh")}}"
 
@@ -32,7 +36,7 @@ resource "aws_instance" "web" {
 
 resource "aws_elb" "web" {
   name            = "web-elb"
-  subnets         = ["${module.vpc.public_subnet_ids}"]
+  subnets         = ["${module.vpc.public_subnets}"]
   security_groups = ["${aws_security_group.web_inbound_sg.id}"]
 
   "listener" {
@@ -96,7 +100,7 @@ resource "aws_security_group" "web_host_sg" {
     from_port   = 80
     protocol    = "tcp"
     to_port     = 80
-    cidr_blocks = ["${module.vpc.vpc_cidr}"]
+    cidr_blocks = ["${module.vpc.vpc_cidr_block}"]
   }
 
   egress {

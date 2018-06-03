@@ -10,24 +10,27 @@ resource "aws_instance" "base" {
 
 resource "aws_eip" "base" {
   instance = "${aws_instance.base.id}"
-  vpc = true
+  vpc      = true
 }
 
 resource "aws_security_group" "allow_http_ssh" {
-  name = "allow_http_ssh"
+  name        = "allow_http_ssh"
   description = "allow http/ssh"
+
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   tags {
     Name = "web-server"
     Made = "terraform"
