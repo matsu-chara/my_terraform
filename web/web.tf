@@ -84,7 +84,7 @@ resource "aws_security_group" "web_inbound_sg" {
 resource "aws_security_group" "web_host_sg" {
   name        = "web_host"
   description = "Allow SSH * HTTP to web hosts"
-  vpc_id      = "${module.vpc.vpc_id}}"
+  vpc_id      = "${module.vpc.vpc_id}"
 
   ingress {
     from_port   = 22
