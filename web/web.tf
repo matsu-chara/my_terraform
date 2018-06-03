@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source        = "./vpc"
+  source        = "git::https://github.com/turnbullpress/tf_vpc?ref=v0.0.1"
   name          = "web"
   cidr          = "10.0.0.0/16"
   public_subnet = "10.0.1.0/24"
@@ -89,7 +89,6 @@ resource "aws_security_group" "web_host_sg" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 
   # HTTP access from the VPC
   ingress {
