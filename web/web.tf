@@ -9,6 +9,10 @@ module "vpc" {
   public_subnet = "10.0.1.0/24"
 }
 
+locals {
+  instance_ip_count = "${length(var.instance_ips)}"
+}
+
 resource "aws_key_pair" "auth" {
   key_name   = "${var.key_name}"
   public_key = "${file(var.public_key_path)}"
@@ -26,7 +30,7 @@ resource "aws_instance" "web" {
     "${aws_security_group.web_host_sg.id}",
   ]
 
-  count      = "${length(var.instance_ips)}"
+  count      = instance_ip_count
   private_ip = "${var.instance_ips[count.index]}"
 
   tags {

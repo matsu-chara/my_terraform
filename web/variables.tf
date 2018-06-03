@@ -35,3 +35,7 @@ variable "owner_tag" {
   type = "list"
   default = ["team1", "team2"]
 }
+
+variable "environment" {
+  default = "development"
+}
