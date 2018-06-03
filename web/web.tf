@@ -28,6 +28,10 @@ resource "aws_instance" "web" {
 
   count      = "${length(var.instance_ips)}"
   private_ip = "${var.instance_ips[count.index]}"
+
+  tags {
+    Name = "web-${format("%03d", count.index+1)}"
+  }
 }
 
 resource "aws_elb" "web" {
