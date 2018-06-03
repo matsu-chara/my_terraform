@@ -31,6 +31,7 @@ resource "aws_instance" "web" {
 
   tags {
     Name = "web-${format("%03d", count.index+1)}"
+    Owner = "${var.owner_tag[count.index]}"
   }
 }
 
