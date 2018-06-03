@@ -3,15 +3,10 @@ provider "aws" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "1.32.0"
+  source  = "./vpc"
   name    = "web"
   cidr    = "10.0.0.0/16"
-  azs     = ["${var.region}"]
-
-  public_subnets = [
-    "10.0.1.0/24",
-  ]
+  public_subnet = "10.0.1.0/24"
 }
 
 resource "aws_key_pair" "auth" {
@@ -23,7 +18,7 @@ resource "aws_instance" "web" {
   ami                         = "${lookup(var.ami, var.region)}}"
   instance_type               = "${var.instance_type}"
   key_name                    = "${var.key_name}}"
-  subnet_id                   = "${module.vpc.public_subnets}"
+  subnet_id                   = ["${module.vpc.public_subnet_id}"]
   associate_public_ip_address = true
   user_data                   = "${file("files/web_bootstrap.sh")}}"
 
@@ -36,7 +31,7 @@ resource "aws_instance" "web" {
 
 resource "aws_elb" "web" {
   name            = "web-elb"
-  subnets         = ["${module.vpc.public_subnets}"]
+  subnets         = ["${module.vpc.public_subnet_id}"]
   security_groups = ["${aws_security_group.web_inbound_sg.id}"]
 
   "listener" {
