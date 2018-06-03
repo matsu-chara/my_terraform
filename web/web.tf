@@ -26,7 +26,8 @@ resource "aws_instance" "web" {
     "${aws_security_group.web_host_sg.id}",
   ]
 
-  count = 2
+  count      = "${length(var.instance_ips)}"
+  private_ip = "${var.instance_ips[count.index]}"
 }
 
 resource "aws_elb" "web" {
