@@ -1,4 +1,5 @@
 #!/bin/bash
+## not worked on amazon linux
 sudo curl https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb -o puppetlabs-release.deb
 sudo dpkg -i puppetlabs-release.deb
 sudo apt-get -qq update
