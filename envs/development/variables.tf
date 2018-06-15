@@ -24,7 +24,7 @@ variable "public_subnets" {
   description = "lift of subnet"
 }
 
-variable "private_subnets" {} {
+variable "private_subnets" {
   type = "list"
   default = []
   description = "list of private subnet"
