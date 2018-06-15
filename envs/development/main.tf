@@ -17,3 +17,19 @@ module "vpc" {
   public_subnets = ["${var.public_subnets}"]
   private_subnets = ["${var.private_subnets}"]
 }
+
+output "public_subnet_ids" {
+  value = ["${module.vpc.public_subnet_ids}"]
+}
+
+output "privatesubnet_ids" {
+  value = ["${module.vpc.private_subnet_ids}"]
+}
+
+output "bastion_host_dns" {
+  value = "${module.vpc.bastion_host_dns}"
+}
+
+output "bastion_host_ip" {
+    value = "${module.vpc.bastion_host_ip}"
+}
